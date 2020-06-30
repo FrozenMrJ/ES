@@ -151,8 +151,10 @@ public class ESUtils {
      * 查找全部的文档
      * @param index 索引名（数据库名）
      * @param type  类型名（表名）
+     * @param from 从第几个开始，默认0
+     * @param size 显示数据的行数，默认10
      */
-    public static ArrayList<Map<String, Object>> searchAll(String index,String type) {
+    public static ArrayList<Map<String, Object>> searchAll(String index,String type,int from,int size) {
         client = ESUtils.getSingleClient();
         // Query
         QueryBuilder matchAll = QueryBuilders.matchAllQuery();
@@ -160,6 +162,8 @@ public class ESUtils {
         SearchRequestBuilder searchRequestBuilder = client.prepareSearch(index);
         searchRequestBuilder.setTypes(type);
         searchRequestBuilder.setQuery(matchAll);
+        searchRequestBuilder.setFrom(from >= 0 ? from : 0);
+        searchRequestBuilder.setSize(size >= 0 ? size : 10);
 
         // 执行
         SearchResponse searchResponse = searchRequestBuilder.execute().actionGet();
@@ -194,10 +198,13 @@ public class ESUtils {
      * @param suffix 后缀 查找的文件后缀名，不填为全查
      * @param keyword  搜索的关键字
      * @param fields   搜索的域
+     * @param from 从第几个文档开始查询，默认为0
+     * @param size 查询多少个文档，默认为10
      * @return
      */
     @Test
-    public static ArrayList<Map<String, Object>> CombinedQuery(String index, String types, String suffix, String keyword, String... fields){
+    public static ArrayList<Map<String, Object>> CombinedQuery(String index, String types, String suffix,
+                                                               String keyword, int from,int size,String... fields){
         client = ESUtils.getSingleClient();
         // 最上级为全查
         BoolQueryBuilder builder = QueryBuilders.boolQuery();
@@ -225,6 +232,8 @@ public class ESUtils {
                 .setTypes(types)
                 .highlighter(hiBuilder)
                 .setQuery(queryBuilder)
+                .setFrom(from >= 0 ? from : 0)
+                .setSize(size >= 0 ? size : 10)
                 .execute().actionGet();
 
         SearchHits hits = searchResponse.getHits();

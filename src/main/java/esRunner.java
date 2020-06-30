@@ -35,7 +35,7 @@ public class esRunner {
 //        ArrayList<Map<String, Object>> datas = ESUtils.query3("wxsj_index_v1","wxsj_type","pdf",keyword,"title","content");
 //        ArrayList<Map<String, Object>> datas = ESUtils.CombinedQuery("wxsj_index_v1","wxsj_type","",keyword,"title","content");
 //        ArrayList<Map<String, Object>> datas = fileService.searchFile(keyword,"pdf","title","content");
-        ArrayList<Map<String, Object>> datas = fileService.searchAllFiles();
+        ArrayList<Map<String, Object>> datas = fileService.searchAllFiles(0,100);
         for(Map map : datas){
             System.out.println("标题："+ map.get("title") + "\n");
 //            System.out.println("页号："+ map.get("page") + "\n");

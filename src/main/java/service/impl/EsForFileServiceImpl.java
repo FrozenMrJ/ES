@@ -29,8 +29,8 @@ public class EsForFileServiceImpl implements EsForFileService {
     }
 
     @Override
-    public ArrayList<Map<String, Object>> searchAllFiles() {
-        return ESUtils.searchAll(esIndex, esType);
+    public ArrayList<Map<String, Object>> searchAllFiles(int from,int size) {
+        return ESUtils.searchAll(esIndex, esType,from,size);
     }
 
     /**
@@ -41,8 +41,8 @@ public class EsForFileServiceImpl implements EsForFileService {
      * @return
      */
     @Override
-    public ArrayList<Map<String, Object>> searchFile(String keyword,String suffix, String... fields) {
-        return ESUtils.CombinedQuery(esIndex, esType,suffix,keyword,fields);
+    public ArrayList<Map<String, Object>> searchFile(String keyword,String suffix, int from,int size,String... fields) {
+        return ESUtils.CombinedQuery(esIndex, esType,suffix,keyword,from,size,fields);
     }
 
     @Override
